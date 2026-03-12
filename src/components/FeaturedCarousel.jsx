@@ -21,7 +21,7 @@ function FeaturedCarousel() {
 
         const shuffled = champArray.sort(() => 0.5 - Math.random()); //shuffles the champs
 
-        const randomTen = shuffled.slice(0, 10);//TOOK WAY TO LONG TO FIGURE THIS OUT T-T
+        const randomTen = shuffled.slice(0, 10); //TOOK WAY TO LONG TO FIGURE THIS OUT T-T
 
         setChampions(randomTen);
 

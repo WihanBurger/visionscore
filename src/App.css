@@ -1,3 +1,5 @@
+@import url("https://use.typekit.net/jjv4hqb.css");
+
 hhtml, body {
   margin: 0;
   padding: 0;
@@ -62,19 +64,17 @@ hhtml, body {
 }
 
 .title {
-  font-family: "Friz Quadrata Std", serif;
+  font-family: "beaufort-pro", serif;
   font-size: 12rem;
-
-  background: radial-gradient(#D4BB73, #9d773a);
+  background: radial-gradient(#D4BB73, #9b702b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-
   margin-bottom: 10px;
   line-height: 1.1;
 }
 
 .subtext {
-  font-family: "Friz Quadrata Std", serif;
+  font-family: "beaufort-pro", serif;
   font-size: 2rem;
   color: #B8C1CC;
   opacity: 0.9;
@@ -125,7 +125,7 @@ hhtml, body {
   opacity: 1;
   text-align: center;
   font-size: 1.6rem;
-  font-family: "Friz Quadrata Std", serif;
+  font-family: "beaufort-pro", serif;
   padding-left: 80px;
 }
 
@@ -140,7 +140,7 @@ hhtml, body {
   border: none;
   background: transparent;
   color: #D4BB73;
-  font-family: "Friz Quadrata Std", serif;
+  font-family: "beaufort-pro", serif;
   padding: 0 25px;
   cursor: pointer;
   flex: 0 0 auto;  
@@ -151,7 +151,7 @@ hhtml, body {
 }
 
 .sub-title {
-  font-family: "Friz Quadrata Std", serif;
+  font-family: "beaufort-pro", serif;
   font-size: 4rem;
   text-align: center;
   padding-top: 3%;
@@ -170,7 +170,6 @@ hhtml, body {
   padding: 40px 20px;  
   justify-content: flex-start;  
   scroll-behavior: smooth;
-
   -ms-overflow-style: none;  
   scrollbar-width: none;     
 }
@@ -217,7 +216,7 @@ hhtml, body {
   transform: translate(-50%, -50%);
   width: 90%;
   text-align: center;
-  font-family: "Friz Quadrata Std", serif;
+  font-family: "beaufort-pro", serif;
   font-size: 3rem;
   line-height: 1.2;
   background: radial-gradient(#ffffff, #ffffff);

@@ -1,3 +1,10 @@
+hhtml, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: linear-gradient(#060905, #1A3D43);
+}
+
 .App {
   text-align: center;
 }
@@ -29,10 +36,262 @@
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.hero {
+  height: 100vh;
+  width: 100%;
+  background-image: url("/src/Images/Landing page background.jpg");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.text-container {
+  text-align: center;
+  max-width: 90%;
+}
+
+.title {
+  font-family: "Friz Quadrata Std", serif;
+  font-size: 12rem;
+
+  background: radial-gradient(#D4BB73, #9d773a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  margin-bottom: 10px;
+  line-height: 1.1;
+}
+
+.subtext {
+  font-family: "Friz Quadrata Std", serif;
+  font-size: 2rem;
+  color: #B8C1CC;
+  opacity: 0.9;
+}
+
+.search-container {
+  text-align: center;
+  margin: 40px 20px;
+}
+
+.search-container form {
+  width: 50vw;       
+  max-width: 2000px; 
+  margin: 0 auto;
+}
+
+.custom-search {
+  width: 100%; 
+  padding: 4px;
+  border-radius: 100px;
+  background: radial-gradient(circle, #D4BB73, #9d773a);
+  display: inline-block;
+  box-shadow: 0 0 12px rgba(212,187,115,0.35);
+}
+
+.custom-search .inner-search {
+  display: flex;
+  width: 100%;  
+  border-radius: 100px;
+  overflow: hidden;
+
+  background: radial-gradient(circle, #047B97, #012831);
+}
+
+.custom-search .inner-search .form-control {
+  font-size: 1.3rem;
+  background: none;        
+  background-color: transparent; 
+  border: none;           
+  box-shadow: none;    
+  color: #B8C1CC;
+  padding: 14px 22px;
+  flex: 1;             
+}
+
+.custom-search .inner-search .form-control::placeholder {
+  color: #bf8a28;
+  opacity: 1;
+  text-align: center;
+  font-size: 1.6rem;
+  font-family: "Friz Quadrata Std", serif;
+  padding-left: 80px;
+}
+
+.custom-search .inner-search .form-control:focus {
+  outline: none;
+  box-shadow: none !important;
+  background: none;
+  color: white;
+}
+
+.custom-search .inner-search .search-button {
+  border: none;
+  background: transparent;
+  color: #D4BB73;
+  font-family: "Friz Quadrata Std", serif;
+  padding: 0 25px;
+  cursor: pointer;
+  flex: 0 0 auto;  
+}
+
+.custom-search .inner-search .search-button:hover {
+  background: rgba(0,0,0,0.25);
+}
+
+.sub-title {
+  font-family: "Friz Quadrata Std", serif;
+  font-size: 4rem;
+  text-align: center;
+  padding-top: 3%;
+  background: radial-gradient(#D4BB73, #9d773a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-decoration: underline;
+  text-decoration-color: #D4BB73;
+  margin-top: 35px;
+}
+
+.champion-row {
+  display: flex;
+  gap: 40px;          
+  overflow-x: auto;
+  padding: 40px 20px;  
+  justify-content: flex-start;  
+  scroll-behavior: smooth;
+
+  -ms-overflow-style: none;  
+  scrollbar-width: none;     
+}
+
+.champion-row::-webkit-scrollbar {
+  display: none;  
+}
+
+.champion-card-wrapper {
+  width: 600px;
+  height: 750px;
+  border-radius: 50px;
+  padding: 8px;
+  background: radial-gradient(circle, #D4BB73, #9d773a);
+  flex-shrink: 0;
+  box-shadow: 0 0 18px rgba(212,187,115,0.45);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.champion-card-wrapper:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 30px rgba(212,187,115,0.7);
+}
+
+.champion-card {
+  width: 100%;
+  height: 100%;
+  border-radius: 42px;  
+  overflow: hidden;
+  position: relative;
+}
+
+.champion-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.champion-name {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  text-align: center;
+  font-family: "Friz Quadrata Std", serif;
+  font-size: 3rem;
+  line-height: 1.2;
+  background: radial-gradient(#ffffff, #ffffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  pointer-events: none;
+}
+
+@media (max-width: 1600px) {
+  .champion-card-wrapper {
+    width: 360px;
+    height: 650px;
   }
-  to {
-    transform: rotate(360deg);
+  .champion-name {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .champion-card-wrapper {
+    width: 300px;
+    height: 550px;
+  }
+  .champion-name {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .champion-card-wrapper {
+    width: 220px;
+    height: 400px;
+  }
+  .champion-name {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .champion-card-wrapper {
+    width: 180px;
+    height: 330px;
+  }
+  .champion-name {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .title {
+    font-size: 8rem;
+  }
+
+  .subtitle {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 6rem;
+  }
+
+  .subtitle {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 4.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
   }
 }

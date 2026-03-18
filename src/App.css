@@ -138,6 +138,7 @@ hhtml, body {
 
 .custom-search .inner-search .search-button {
   border: none;
+  font-size: 1.5rem;
   background: transparent;
   color: #D4BB73;
   font-family: "beaufort-pro", serif;
@@ -224,6 +225,95 @@ hhtml, body {
   -webkit-text-fill-color: transparent;
   pointer-events: none;
 }
+
+.custom-navbar {
+  background: rgba(1, 40, 49, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  padding: 15px 0;
+
+  border-bottom: 3px solid transparent;
+  border-image: radial-gradient(circle, #D4BB73, #9d773a) 1;
+
+  box-shadow: 0 0 20px rgba(212, 187, 115, 0.25);
+
+  z-index: 999;
+}
+
+.nav-brand {
+  font-family: "beaufort-pro", serif;
+  font-size: 2rem;
+
+  background: radial-gradient(#D4BB73, #9d773a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  transition: all 0.3s ease;
+}
+
+.nav-brand:hover {
+  text-shadow: 0 0 10px rgba(212,187,115,0.7);
+}
+
+.nav-links .nav-link {
+  position: relative;
+  color: #B8C1CC !important;
+  margin-left: 25px;
+
+  font-family: "beaufort-pro", serif;
+  font-size: 1.2rem;
+
+  transition: all 0.3s ease;
+}
+
+.nav-links .nav-link:hover {
+  color: #D4BB73 !important;
+  text-shadow: 0 0 8px rgba(212,187,115,0.7);
+}
+
+.nav-links .nav-link.active {
+  color: #D4BB73 !important;
+}
+
+.nav-links .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+
+  width: 0%;
+  height: 3px;
+
+  background: radial-gradient(circle, #D4BB73, #9d773a);
+
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  border-radius: 10px;
+}
+
+.nav-links .nav-link:hover::after {
+  width: 60%;
+}
+
+.nav-links .nav-link.active::after {
+  width: 80%;
+}
+
+.navbar-toggler {
+  border: 2px solid #D4BB73;
+  border-radius: 10px;
+}
+
+.navbar-toggler-icon {
+  filter: invert(1);
+}
+
+body {
+  padding-top: 90px;
+}
+
+
 
 @media (max-width: 1600px) {
   .champion-card-wrapper {

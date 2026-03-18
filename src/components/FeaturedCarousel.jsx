@@ -9,7 +9,7 @@ function FeaturedCarousel() {
     const fetchChampions = async () => {
       try {
         const res = await fetch(
-          "https://ddragon.leagueoflegends.com/cdn/14.4.1/data/en_US/champion.json" //Static api ,remember to ask if its ok
+          "https://ddragon.leagueoflegends.com/cdn/14.4.1/data/en_US/champion.json" 
         );
         const data = await res.json();
 

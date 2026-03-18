@@ -35,7 +35,7 @@ function ChampionPage() {
     >
       <h1
         style={{
-          fontFamily: "Friz Quadrata Std, serif",
+          fontFamily: "beaufort-pro, serif",
           fontSize: "4rem",
           background: "radial-gradient(#D4BB73, #BA904B)",
           WebkitBackgroundClip: "text",
@@ -44,7 +44,7 @@ function ChampionPage() {
       >
         {champData.name}
       </h1>
-      <h3 style={{ fontFamily: "Friz Quadrata Std, serif", opacity: 0.9 }}>
+      <h3 style={{ fontFamily: "beaufort-pro, serif", opacity: 0.9 }}>
         {champData.title}
       </h3>
       <img

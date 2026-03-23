@@ -313,7 +313,272 @@ body {
   padding-top: 90px;
 }
 
+.champion-page-container {
+  background: linear-gradient(135deg, #060905, #1A3D43);
+  min-height: 100vh;
+  padding: 40px;
+  color: #B8C1CC;
+  font-family: "beaufort-pro", serif;
+}
 
+.search-wrapper {
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.champion-page-flex {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 60px;
+  flex-wrap: wrap;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.champion-left {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 300px; 
+  max-width: 400px; 
+}
+
+.champion-splash {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(212,187,115,0.3);
+  position: sticky;
+  top: 40px;
+  background: #0d1e21; 
+  width: 100%;
+  aspect-ratio: 1 / 1.8;
+}
+
+.champion-splash img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.champion-splash.loaded img {
+  opacity: 1;
+}
+
+.champion-right {
+  flex: 1.2;
+  min-width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.champion-title {
+  font-size: 3.5rem;
+  margin: 0;
+  background: radial-gradient(#D4BB73, #BA904B);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.champion-subtitle {
+  font-size: 1.5rem;
+  margin: 5px 0 20px 0;
+  opacity: 0.8;
+  font-style: italic;
+  text-transform: capitalize;
+}
+
+.tab-navigation {
+  display: flex;
+  gap: 15px;
+  border-bottom: 2px solid rgba(212, 187, 115, 0.2);
+  padding-bottom: 10px;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: #8b99a6;
+  font-size: 1.2rem;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 8px 8px 0 0;
+  transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+  color: #D4BB73;
+}
+
+.tab-btn.active {
+  color: #D4BB73;
+  background: rgba(212, 187, 115, 0.1);
+  box-shadow: inset 0 -3px 0 #D4BB73;
+}
+
+.glass-panel {
+  background: rgba(1, 40, 49, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 187, 115, 0.15);
+  border-radius: 15px;
+  padding: 25px;
+  min-height: 450px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.glass-panel::-webkit-scrollbar {
+  width: 8px;
+}
+.glass-panel::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+.glass-panel::-webkit-scrollbar-thumb {
+  background: #047B97;
+  border-radius: 10px;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.chart-card {
+  height: 320px;
+  padding: 15px;
+  background: rgba(0, 15, 20, 0.5);
+  border-radius: 15px;
+  border: 1px solid rgba(212, 187, 115, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-card.full-width {
+  grid-column: 1 / -1;
+  align-items: center;
+}
+
+.chart-card h3 {
+  text-align: center;
+  color: #D4BB73;
+  margin-bottom: 15px;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.chart-wrapper {
+  position: relative;
+  flex-grow: 1;
+  width: 100%;
+  min-height: 0; 
+}
+
+.chart-wrapper canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.abilities-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ability-item {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  border-radius: 10px;
+  transition: transform 0.2s;
+}
+
+.ability-item:hover {
+  transform: translateX(5px);
+  background: rgba(4, 123, 151, 0.1);
+}
+
+.ability-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  border: 2px solid #D4BB73;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.ability-text h4 {
+  margin: 0 0 8px 0;
+  color: #D4BB73;
+  font-size: 1.2rem;
+}
+
+.ability-text h4 span {
+  color: #8b99a6;
+  font-size: 0.9rem;
+  font-weight: normal;
+}
+
+.ability-text p {
+  margin: 0;
+  line-height: 1.5;
+  font-size: 0.95rem;
+  color: #e2e8f0;
+}
+
+.ability-text p span {
+  color: #ff8c00; 
+  font-weight: bold;
+}
+
+.lore-text {
+  line-height: 1.8;
+  font-size: 1.1rem;
+  color: #e2e8f0;
+  padding: 10px;
+}
+
+.compare-btn {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #047B97, #012831);
+  border: 1px solid #D4BB73;
+  color: #D4BB73;
+  border-radius: 25px;
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  letter-spacing: 1px;
+}
+
+.compare-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(212,187,115,0.4);
+  background: linear-gradient(135deg, #0595b5, #023c4a);
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 2rem;
+  color: #D4BB73;
+  background: #060905;
+  font-family: "beaufort-pro", serif;
+}
 
 @media (max-width: 1600px) {
   .champion-card-wrapper {

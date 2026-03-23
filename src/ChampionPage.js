@@ -1,69 +1,261 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { Bar, Pie, Radar } from "react-chartjs-2";
+import SearchBar from "./components/SearchBar";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement,
+  PointElement,
+  LineElement,
+  RadialLinearScale,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import "./App.css";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement,
+  PointElement,
+  LineElement,
+  RadialLinearScale,
+  Tooltip,
+  Legend,
+);
 
 function ChampionPage() {
   const { champId } = useParams();
   const [champData, setChampData] = useState(null);
+  const [version, setVersion] = useState("14.4.1");
+  const [activeTab, setActiveTab] = useState("stats");
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   useEffect(() => {
-    const fetchChampion = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(
-          `https://ddragon.leagueoflegends.com/cdn/14.4.1/data/en_US/champion/${champId}.json`
+        const versionRes = await fetch(
+          "https://ddragon.leagueoflegends.com/api/versions.json",
         );
-        const data = await response.json();
+        const versions = await versionRes.json();
+        const latestVersion = versions[0];
+        setVersion(latestVersion);
+
+        const champRes = await fetch(
+          `https://ddragon.leagueoflegends.com/cdn/${latestVersion}/data/en_US/champion/${champId}.json`,
+        );
+        const data = await champRes.json();
         setChampData(data.data[champId]);
       } catch (error) {
-        console.error("Error fetching champion:", error);
+        console.error("Error fetching champion data:", error);
       }
     };
-
-    fetchChampion();
+    fetchData();
   }, [champId]);
 
-  if (!champData) return <p>Loading champion...</p>;
+  const { barData, pieData, radarData } = useMemo(() => {
+    if (!champData) return {};
+    const stats = champData.stats;
+
+    return {
+      barData: {
+        labels: ["HP", "Armor", "Attack Damage", "Magic Resist", "Move Speed"],
+        datasets: [
+          {
+            label: champData.name,
+            data: [
+              stats.hp,
+              stats.armor,
+              stats.attackdamage,
+              stats.spellblock,
+              stats.movespeed,
+            ],
+            backgroundColor: [
+              "#D4BB73",
+              "#BA904B",
+              "#047B97",
+              "#9d773a",
+              "#012831",
+            ],
+          },
+        ],
+      },
+      pieData: {
+        labels: [
+          "Offense (Base AD)",
+          "Defense (HP+Resists)",
+          "Utility (Speed+Mana)",
+        ],
+        datasets: [
+          {
+            data: [
+              stats.attackdamage,
+              stats.hp + stats.armor + stats.spellblock,
+              stats.movespeed + (stats.mp || 0),
+            ],
+            backgroundColor: ["#D4BB73", "#BA904B", "#047B97"],
+          },
+        ],
+      },
+      radarData: {
+        labels: ["Damage", "Tankiness", "Mobility", "Sustain", "Resource"],
+        datasets: [
+          {
+            label: champData.name,
+            data: [
+              Math.min((stats.attackdamage / 150) * 100, 100),
+              Math.min(
+                ((stats.hp + stats.armor * 10 + stats.spellblock * 10) / 4500) *
+                  100,
+                100,
+              ),
+              Math.min((stats.movespeed / 400) * 100, 100),
+              Math.min((stats.hpregen / 15) * 100, 100),
+              Math.min(((stats.mp || 0) / 500) * 100, 100),
+            ],
+            backgroundColor: "rgba(212,187,115,0.2)",
+            borderColor: "#D4BB73",
+            pointBackgroundColor: "#D4BB73",
+          },
+        ],
+      },
+    };
+  }, [champData]);
+
+  if (!champData) return <div className="loading">Summoning Champion...</div>;
 
   return (
-    <div
-      style={{
-        textAlign: "center",
-        padding: "40px",
-        background: "linear-gradient(#060905, #1A3D43)",
-        minHeight: "100vh",
-        color: "#B8C1CC",
-      }}
-    >
-      <h1
-        style={{
-          fontFamily: "beaufort-pro, serif",
-          fontSize: "4rem",
-          background: "radial-gradient(#D4BB73, #BA904B)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-        }}
-      >
-        {champData.name}
-      </h1>
-      <h3 style={{ fontFamily: "beaufort-pro, serif", opacity: 0.9 }}>
-        {champData.title}
-      </h3>
-      <img
-        src={`https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champId}_0.jpg`}
-        alt={champData.name}
-        style={{
-          maxWidth: "600px",
-          borderRadius: "20px",
-          marginTop: "20px",
-          boxShadow: "0 0 20px rgba(0,0,0,0.5)",
-        }}
-      />
-      <div style={{ marginTop: "30px", fontSize: "1.1rem" }}>
-        <h2>Base Stats</h2>
-        <p>HP: {champData.stats.hp}</p>
-        <p>Attack: {champData.stats.attackdamage}</p>
-        <p>Armor: {champData.stats.armor}</p>
-        <p>Magic Resist: {champData.stats.spellblock}</p>
-        <p>Movement Speed: {champData.stats.movespeed}</p>
+    <div className="champion-page-container">
+      <div className="search-wrapper">
+        <SearchBar />
+      </div>
+
+      <div className="champion-page-flex">
+        <div className="champion-left">
+          <div
+            className={`champion-splash ${imgLoaded ? "loaded" : "skeleton"}`}
+          >
+            <img
+              src={`https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champId}_0.jpg`}
+              alt={champData.name}
+              onLoad={() => setImgLoaded(true)}
+            />
+          </div>
+        </div>
+
+        <div className="champion-right">
+          <div className="champion-header">
+            <h1 className="champion-title">{champData.name}</h1>
+            <h3 className="champion-subtitle">{champData.title}</h3>
+          </div>
+
+          <div className="tab-navigation">
+            {["stats", "abilities", "lore"].map((tab) => (
+              <button
+                key={tab}
+                className={`tab-btn ${activeTab === tab ? "active" : ""}`}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </button>
+            ))}
+          </div>
+
+          <div className="tab-content glass-panel">
+            {activeTab === "stats" && (
+              <div className="charts-grid">
+                <div className="chart-card">
+                  <h3>Power Metrics</h3>
+                  <div className="chart-wrapper">
+                    <Bar
+                      data={barData}
+                      options={{ maintainAspectRatio: false }}
+                    />
+                  </div>
+                </div>
+                <div className="chart-card">
+                  <h3>Gameplay Profile</h3>
+                  <div className="chart-wrapper">
+                    <Radar
+                      data={radarData}
+                      options={{
+                        maintainAspectRatio: false,
+                        scales: { r: { ticks: { display: false } } },
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="chart-card full-width">
+                  <h3>Role Contribution</h3>
+                  <div className="chart-wrapper">
+                    <Pie
+                      data={pieData}
+                      options={{ maintainAspectRatio: false }}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "abilities" && (
+              <div className="abilities-list">
+                {/* Passive */}
+                <div className="ability-item">
+                  <img
+                    src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/passive/${champData.passive.image.full}`}
+                    alt="Passive"
+                    className="ability-icon"
+                  />
+                  <div className="ability-text">
+                    <h4>
+                      {champData.passive.name} <span>(Passive)</span>
+                    </h4>
+                    <p
+                      dangerouslySetInnerHTML={{
+                        __html: champData.passive.description,
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {champData.spells.map((spell, idx) => {
+                  const hotkeys = ["Q", "W", "E", "R"];
+                  return (
+                    <div key={idx} className="ability-item">
+                      <img
+                        src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/spell/${spell.image.full}`}
+                        alt={spell.name}
+                        className="ability-icon"
+                      />
+                      <div className="ability-text">
+                        <h4>
+                          {spell.name} <span>({hotkeys[idx]})</span>
+                        </h4>
+                        <p
+                          dangerouslySetInnerHTML={{
+                            __html: spell.description,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {activeTab === "lore" && (
+              <div className="lore-text">
+                <p>{champData.lore}</p>
+              </div>
+            )}
+          </div>
+
+          <button className="compare-btn">Compare Champion</button>
+        </div>
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ function CustomNavbar() {
     <Navbar expand="lg" className="custom-navbar" fixed="top">
       <Container>
         <Navbar.Brand as={NavLink} to="/" className="nav-brand">
-          Rift Archive
+          VisionScore
         </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

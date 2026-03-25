@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
 import { Bar, Pie, Radar } from "react-chartjs-2";
 import SearchBar from "./components/SearchBar";
@@ -30,6 +30,7 @@ ChartJS.register(
 
 function ChampionPage() {
   const { champId } = useParams();
+  const navigate = useNavigate();
   const [champData, setChampData] = useState(null);
   const [version, setVersion] = useState("14.4.1");
   const [activeTab, setActiveTab] = useState("stats");
@@ -254,7 +255,7 @@ function ChampionPage() {
             )}
           </div>
 
-          <button className="compare-btn">Compare Champion</button>
+          <button className="compare-btn" onClick={() => navigate(`/compare/${champId}`)}>Compare Champion</button>
         </div>
       </div>
     </div>

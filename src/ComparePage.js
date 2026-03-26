@@ -47,6 +47,8 @@ function ComparePage() {
   const [scalingStat, setScalingStat] = useState("hp");
 
   useEffect(() => {
+    localStorage.setItem("lastViewedCompare", baseChampId);
+    window.dispatchEvent(new Event("recentUpdate"));
     const fetchInitialData = async () => {
       try {
         const versionRes = await fetch(

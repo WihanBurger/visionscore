@@ -307,7 +307,7 @@ body {
 }
 
 .champion-page-container {
-  background: linear-gradient(135deg, #060905, #1A3D43);
+  background: transparent;
   min-height: 100vh;
   padding: 40px;
   color: #B8C1CC;

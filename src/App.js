@@ -17,12 +17,24 @@ function App() {
         zIndex: -1 
       }}>
         <LiquidChrome
-          speed={0.3}
-          amplitude={0.4}
-          frequencyX={3}
-          frequencyY={3}
-          interactive={false}
+          baseColor={[0.0, 0.05, 0.1]}
+          speed={0.3}                  
+          amplitude={0.4}            
+          frequencyX={2}
+          frequencyY={2}
+          interactive={false}         
         />
+        
+
+        <div style={{
+          position: 'absolute',
+          top: 0, 
+          left: 0, 
+          width: '100%', 
+          height: '100%',
+          background: 'rgba(6, 9, 5, 0.7)',
+          pointerEvents: 'none'
+        }} />
       </div>
       <CustomNavbar />
 

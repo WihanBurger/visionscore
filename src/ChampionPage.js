@@ -37,6 +37,8 @@ function ChampionPage() {
   const [imgLoaded, setImgLoaded] = useState(false);
 
   useEffect(() => {
+    localStorage.setItem("lastViewedChamp", champId);
+    window.dispatchEvent(new Event("recentUpdate"));
     const fetchData = async () => {
       try {
         const versionRes = await fetch(

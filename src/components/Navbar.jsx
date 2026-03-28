@@ -45,6 +45,11 @@ function CustomNavbar() {
             <Nav.Link as={NavLink} to={`/compare/${lastCompare}`}>
               Compare
             </Nav.Link>
+
+            <Nav.Link as={NavLink} to="/timeline">
+            Timeline
+            </Nav.Link>
+            
           </Nav>
         </Navbar.Collapse>
       </Container>

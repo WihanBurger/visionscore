@@ -4,6 +4,7 @@ import ChampionPage from "./ChampionPage";
 import ComparePage from "./ComparePage";
 import CustomNavbar from "./components/Navbar";
 import LiquidChrome from "./components/LiquidChrome";
+import TimelinePage from "./TimelinePage";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/champions/:champId" element={<ChampionPage />} />
         <Route path="/compare/:baseChampId" element={<ComparePage />} />
+        <Route path="/timeline" element={<TimelinePage />} />
       </Routes>
     </BrowserRouter>
   );

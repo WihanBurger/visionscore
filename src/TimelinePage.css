@@ -1,0 +1,240 @@
+.timeline-page-container {
+  background: transparent;
+  min-height: 100vh;
+  padding: 40px 20px 80px 20px;
+  color: #B8C1CC;
+  font-family: "beaufort-pro", serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timeline-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.timeline-title {
+  font-size: 3.5rem;
+  margin: 0;
+  background: radial-gradient(#D4BB73, #BA904B);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.timeline-subtext {
+  font-size: 1.2rem;
+  font-style: italic;
+  color: #8b99a6;
+}
+
+.timeline-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  width: 100%;
+  max-width: 1200px;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.timeline-sidebar {
+  flex: 1;
+  min-width: 250px;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.timeline-portrait {
+  width: 100%;
+  aspect-ratio: 1 / 1.8;
+  border-radius: 15px;
+  object-fit: cover;
+  box-shadow: 0 0 25px rgba(212, 187, 115, 0.3);
+  border: 2px solid #D4BB73;
+}
+
+.timeline-champ-name {
+  font-size: 2.5rem;
+  color: #D4BB73;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.timeline-controls {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.control-label {
+  font-size: 1.1rem;
+  color: #e2e8f0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.property-dropdown {
+  width: 100%;
+  padding: 12px;
+  background: rgba(1, 40, 49, 0.9);
+  color: #D4BB73;
+  border: 2px solid #D4BB73;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1.1rem;
+  outline: none;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+}
+
+.property-dropdown:focus {
+  box-shadow: 0 0 15px rgba(212, 187, 115, 0.5);
+}
+
+.property-dropdown option {
+  background: #0d1e21;
+}
+
+.timeline-chart-wrapper {
+  flex: 2;
+  min-width: 350px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px;
+}
+
+.search-dropdown-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.champ-search-input {
+  width: 100%;
+  padding: 12px 15px;
+  background: rgba(1, 40, 49, 0.9);
+  color: white;
+  border: 2px solid #D4BB73;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1.1rem;
+  outline: none;
+  box-sizing: border-box;
+  transition: box-shadow 0.3s;
+}
+
+.champ-search-input:focus {
+  box-shadow: 0 0 15px rgba(212, 187, 115, 0.5);
+}
+
+.champ-dropdown-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 250px;
+  overflow-y: auto;
+  background: #0d1e21;
+  border: 1px solid #D4BB73;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  z-index: 50;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+.champ-dropdown-list::-webkit-scrollbar {
+  width: 6px;
+}
+.champ-dropdown-list::-webkit-scrollbar-thumb {
+  background: #D4BB73;
+  border-radius: 10px;
+}
+
+.champ-dropdown-list li {
+  padding: 10px 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: background 0.2s;
+  color: white;
+}
+
+.champ-dropdown-list li:hover {
+  background: rgba(212, 187, 115, 0.2);
+}
+
+.champ-dropdown-list li img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.no-results {
+  text-align: center;
+  color: #8b99a6;
+  font-style: italic;
+  padding: 15px !important;
+}
+
+.timeline-controls.glass-panel {
+  min-height: auto;
+  max-height: none;
+  padding: 15px 20px;
+  margin-top: 10px;
+}
+
+.property-dropdown {
+  padding: 8px 12px;
+}
+
+.release-badge {
+  background: rgba(212, 187, 115, 0.1);
+  color: #D4BB73;
+  padding: 6px 15px;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  margin-top: -10px;
+  margin-bottom: 15px;
+  border: 1px solid #D4BB73;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.chart-header-controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.inline-dropdown {
+  width: auto;
+  min-width: 220px;
+  padding: 8px 15px;
+}
+
+.chart-canvas-container {
+  position: relative;
+  flex-grow: 1;
+  width: 100%;
+  min-height: 0; 
+}

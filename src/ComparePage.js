@@ -1,78 +1,46 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
-import { Radar, Bar, Line, Pie } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  ArcElement,
-} from "chart.js";
+
+import ChampionSearch from "./components/ChampionSearch";
+import RadarChart from "./components/RadarChart";
+import BarChart from "./components/BarChart";
+import PieChart from "./components/PieChart";
+
 import "./ComparePage.css";
-
-ChartJS.register(
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  ArcElement,
-);
-
-const calculateStatAtLevel = (base, growth, level) => {
-  return base + growth * (level - 1) * (0.7025 + 0.0175 * (level - 1));
-};
 
 function ComparePage() {
   const { baseChampId } = useParams();
   const navigate = useNavigate();
   const [version, setVersion] = useState("14.4.1");
+
   const [baseChamp, setBaseChamp] = useState(null);
   const [targetChamp, setTargetChamp] = useState(null);
   const [allChampsList, setAllChampsList] = useState([]);
-  const [targetSearchTerm, setTargetSearchTerm] = useState("");
-  const [isTargetDropdownOpen, setIsTargetDropdownOpen] = useState(false);
-  const [baseSearchTerm, setBaseSearchTerm] = useState("");
-  const [isBaseDropdownOpen, setIsBaseDropdownOpen] = useState(false);
-  const [scalingStat, setScalingStat] = useState("hp");
 
   useEffect(() => {
-    localStorage.setItem("lastViewedCompare", baseChampId);
-    window.dispatchEvent(new Event("recentUpdate"));
     const fetchInitialData = async () => {
       try {
         const versionRes = await fetch(
           "https://ddragon.leagueoflegends.com/api/versions.json",
         );
         const versions = await versionRes.json();
-        const latestVersion = versions[0];
-        setVersion(latestVersion);
+        setVersion(versions[0]);
 
         const baseRes = await fetch(
-          `https://ddragon.leagueoflegends.com/cdn/${latestVersion}/data/en_US/champion/${baseChampId}.json`,
+          `https://ddragon.leagueoflegends.com/cdn/${versions[0]}/data/en_US/champion/${baseChampId}.json`,
         );
         const baseData = await baseRes.json();
         setBaseChamp(baseData.data[baseChampId]);
 
         const listRes = await fetch(
-          `https://ddragon.leagueoflegends.com/cdn/${latestVersion}/data/en_US/champion.json`,
+          `https://ddragon.leagueoflegends.com/cdn/${versions[0]}/data/en_US/champion.json`,
         );
         const listData = await listRes.json();
-
-        const champsArray = Object.values(listData.data).sort((a, b) =>
-          a.name.localeCompare(b.name),
+        setAllChampsList(
+          Object.values(listData.data).sort((a, b) =>
+            a.name.localeCompare(b.name),
+          ),
         );
-        setAllChampsList(champsArray);
       } catch (error) {
         console.error("Error fetching comparison data:", error);
       }
@@ -87,16 +55,12 @@ function ComparePage() {
       );
       const targetData = await targetRes.json();
       setTargetChamp(targetData.data[targetId]);
-      setIsTargetDropdownOpen(false);
-      setTargetSearchTerm("");
     } catch (error) {
       console.error("Error fetching target champion:", error);
     }
   };
 
   const handleBaseSelection = (newBaseId) => {
-    setIsBaseDropdownOpen(false);
-    setBaseSearchTerm("");
     navigate(`/compare/${newBaseId}`, { replace: true });
   };
 
@@ -227,59 +191,11 @@ function ComparePage() {
     };
   }, [targetChamp]);
 
-  const lineData = useMemo(() => {
-    if (!baseChamp) return {};
-    const levels = Array.from({ length: 18 }, (_, i) => i + 1);
-    const baseDataPoints = levels.map((lvl) =>
-      calculateStatAtLevel(
-        baseChamp.stats[scalingStat],
-        baseChamp.stats[`${scalingStat}perlevel`],
-        lvl,
-      ),
-    );
-    const datasets = [
-      {
-        label: baseChamp.name,
-        data: baseDataPoints,
-        borderColor: "#D4BB73",
-        backgroundColor: "rgba(212, 187, 115, 0.2)",
-        tension: 0.2,
-        fill: true,
-      },
-    ];
-    if (targetChamp) {
-      const targetDataPoints = levels.map((lvl) =>
-        calculateStatAtLevel(
-          targetChamp.stats[scalingStat],
-          targetChamp.stats[`${scalingStat}perlevel`],
-          lvl,
-        ),
-      );
-      datasets.push({
-        label: targetChamp.name,
-        data: targetDataPoints,
-        borderColor: "#dc3545",
-        backgroundColor: "rgba(220, 53, 69, 0.2)",
-        tension: 0.2,
-        fill: true,
-      });
-    }
-    return { labels: levels, datasets };
-  }, [baseChamp, targetChamp, scalingStat]);
-
   if (!baseChamp) return <div className="loading">Preparing Arena...</div>;
-
-  const filteredTargetChamps = allChampsList.filter((c) =>
-    c.name.toLowerCase().includes(targetSearchTerm.toLowerCase()),
-  );
-  const filteredBaseChamps = allChampsList.filter((c) =>
-    c.name.toLowerCase().includes(baseSearchTerm.toLowerCase()),
-  );
 
   const renderStatRow = (label, statKey, isDecimal = false) => {
     let valA = baseChamp.stats[statKey] || 0;
     let valB = targetChamp ? targetChamp.stats[statKey] || 0 : "-";
-
     if (isDecimal) {
       valA = Number(valA).toFixed(3);
       if (targetChamp) valB = Number(valB).toFixed(3);
@@ -340,7 +256,6 @@ function ComparePage() {
             className="compare-portrait base-portrait"
           />
           <h2 className="compare-name gold-text">{baseChamp.name}</h2>
-
           <div className="champ-badges">
             <span className="badge difficulty-badge">
               Diff: {baseChamp.info.difficulty}/10
@@ -352,52 +267,21 @@ function ComparePage() {
             ))}
           </div>
 
-          <div className="search-dropdown-wrapper">
-            <input
-              type="text"
-              className="champ-search-input base-search-input"
-              placeholder="Change Champion..."
-              value={baseSearchTerm}
-              onChange={(e) => setBaseSearchTerm(e.target.value)}
-              onFocus={() => setIsBaseDropdownOpen(true)}
-              onBlur={() => setTimeout(() => setIsBaseDropdownOpen(false), 200)}
-            />
-            {isBaseDropdownOpen && (
-              <ul className="champ-dropdown-list base-list">
-                {filteredBaseChamps.map((c) => (
-                  <li key={c.id} onMouseDown={() => handleBaseSelection(c.id)}>
-                    <img
-                      src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${c.image.full}`}
-                      alt={c.name}
-                    />
-                    {c.name}
-                  </li>
-                ))}
-                {filteredBaseChamps.length === 0 && (
-                  <li className="no-results">No champions found</li>
-                )}
-              </ul>
-            )}
-          </div>
+          <ChampionSearch
+            allChampsList={allChampsList}
+            version={version}
+            onSelect={handleBaseSelection}
+            placeholder="Change Champion..."
+            inputClass="base-search-input"
+            listClass="base-list"
+          />
         </div>
 
         <div className="compare-center">
           <div className="compare-radar-wrapper glass-panel">
             <h3 className="chart-title">Gameplay Profile</h3>
-            <Radar
-              data={radarData}
-              options={{
-                maintainAspectRatio: false,
-                scales: {
-                  r: {
-                    angleLines: { color: "rgba(255,255,255,0.1)" },
-                    grid: { color: "rgba(255,255,255,0.1)" },
-                    ticks: { display: false },
-                  },
-                },
-                plugins: { legend: { labels: { color: "#e2e8f0" } } },
-              }}
-            />
+
+            <RadarChart chartData={radarData} />
           </div>
 
           <div className="stat-comparison glass-panel">
@@ -422,27 +306,14 @@ function ComparePage() {
               <div className="pie-chart-half">
                 <h4 className="gold-text">{baseChamp.name}</h4>
                 <div className="pie-canvas-wrapper">
-                  <Pie
-                    data={basePieData}
-                    options={{
-                      maintainAspectRatio: false,
-                      plugins: { legend: { display: false } },
-                    }}
-                  />
+                  <PieChart chartData={basePieData} />
                 </div>
               </div>
-
               {targetChamp && (
                 <div className="pie-chart-half">
                   <h4 className="crimson-text">{targetChamp.name}</h4>
                   <div className="pie-canvas-wrapper">
-                    <Pie
-                      data={targetPieData}
-                      options={{
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                      }}
-                    />
+                    <PieChart chartData={targetPieData} />
                   </div>
                 </div>
               )}
@@ -474,56 +345,8 @@ function ComparePage() {
 
           <div className="compare-bar-wrapper glass-panel">
             <h3 className="chart-title">Combat Stats Breakdown</h3>
-            <Bar
-              data={barData}
-              options={{
-                maintainAspectRatio: false,
-                plugins: { legend: { labels: { color: "#e2e8f0" } } },
-                scales: {
-                  y: {
-                    grid: { color: "rgba(255,255,255,0.1)" },
-                    ticks: { color: "#8b99a6" },
-                  },
-                  x: { grid: { display: false }, ticks: { color: "#8b99a6" } },
-                },
-              }}
-            />
-          </div>
 
-          <div className="compare-line-wrapper glass-panel">
-            <div className="line-chart-header">
-              <h3 className="chart-title">Level 1 - 18 Scaling</h3>
-              <select
-                className="stat-selector"
-                value={scalingStat}
-                onChange={(e) => setScalingStat(e.target.value)}
-              >
-                <option value="hp">Health</option>
-                <option value="armor">Armor</option>
-                <option value="spellblock">Magic Resist</option>
-                <option value="mp">Mana/Resource</option>
-              </select>
-            </div>
-            <div className="line-chart-container">
-              <Line
-                data={lineData}
-                options={{
-                  maintainAspectRatio: false,
-                  plugins: { legend: { labels: { color: "#e2e8f0" } } },
-                  scales: {
-                    y: {
-                      grid: { color: "rgba(255,255,255,0.1)" },
-                      ticks: { color: "#8b99a6" },
-                    },
-                    x: {
-                      grid: { color: "rgba(255,255,255,0.05)" },
-                      ticks: { color: "#8b99a6" },
-                      title: { display: true, text: "Level", color: "#8b99a6" },
-                    },
-                  },
-                }}
-              />
-            </div>
+            <BarChart chartData={barData} />
           </div>
         </div>
 
@@ -553,40 +376,16 @@ function ComparePage() {
             </div>
           )}
 
-          <div className="search-dropdown-wrapper">
-            <input
-              type="text"
-              className="champ-search-input target-search-input"
-              placeholder={
-                targetChamp ? "Change Opponent..." : "Search Opponent..."
-              }
-              value={targetSearchTerm}
-              onChange={(e) => setTargetSearchTerm(e.target.value)}
-              onFocus={() => setIsTargetDropdownOpen(true)}
-              onBlur={() =>
-                setTimeout(() => setIsTargetDropdownOpen(false), 200)
-              }
-            />
-            {isTargetDropdownOpen && (
-              <ul className="champ-dropdown-list target-list">
-                {filteredTargetChamps.map((c) => (
-                  <li
-                    key={c.id}
-                    onMouseDown={() => handleTargetSelection(c.id)}
-                  >
-                    <img
-                      src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${c.image.full}`}
-                      alt={c.name}
-                    />
-                    {c.name}
-                  </li>
-                ))}
-                {filteredTargetChamps.length === 0 && (
-                  <li className="no-results">No champions found</li>
-                )}
-              </ul>
-            )}
-          </div>
+          <ChampionSearch
+            allChampsList={allChampsList}
+            version={version}
+            onSelect={handleTargetSelection}
+            placeholder={
+              targetChamp ? "Change Opponent..." : "Search Opponent..."
+            }
+            inputClass="target-search-input"
+            listClass="target-list"
+          />
         </div>
       </div>
     </div>

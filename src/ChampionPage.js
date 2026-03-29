@@ -1,32 +1,12 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
-import { Bar, Pie, Radar } from "react-chartjs-2";
 import SearchBar from "./components/SearchBar";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  ArcElement,
-  PointElement,
-  LineElement,
-  RadialLinearScale,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import "./App.css";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  ArcElement,
-  PointElement,
-  LineElement,
-  RadialLinearScale,
-  Tooltip,
-  Legend,
-);
+import BarChart from "./components/BarChart";
+import PieChart from "./components/PieChart";
+import RadarChart from "./components/RadarChart";
+
+import "./App.css";
 
 function ChampionPage() {
   const { champId } = useParams();
@@ -174,31 +154,19 @@ function ChampionPage() {
                 <div className="chart-card">
                   <h3>Power Metrics</h3>
                   <div className="chart-wrapper">
-                    <Bar
-                      data={barData}
-                      options={{ maintainAspectRatio: false }}
-                    />
+                    <BarChart chartData={barData} />
                   </div>
                 </div>
                 <div className="chart-card">
                   <h3>Gameplay Profile</h3>
                   <div className="chart-wrapper">
-                    <Radar
-                      data={radarData}
-                      options={{
-                        maintainAspectRatio: false,
-                        scales: { r: { ticks: { display: false } } },
-                      }}
-                    />
+                    <RadarChart chartData={radarData} />
                   </div>
                 </div>
                 <div className="chart-card full-width">
                   <h3>Role Contribution</h3>
                   <div className="chart-wrapper">
-                    <Pie
-                      data={pieData}
-                      options={{ maintainAspectRatio: false }}
-                    />
+                    <PieChart chartData={pieData} />
                   </div>
                 </div>
               </div>
@@ -206,7 +174,6 @@ function ChampionPage() {
 
             {activeTab === "abilities" && (
               <div className="abilities-list">
-                {/* Passive */}
                 <div className="ability-item">
                   <img
                     src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/passive/${champData.passive.image.full}`}
@@ -257,7 +224,12 @@ function ChampionPage() {
             )}
           </div>
 
-          <button className="compare-btn" onClick={() => navigate(`/compare/${champId}`)}>Compare Champion</button>
+          <button
+            className="compare-btn"
+            onClick={() => navigate(`/compare/${champId}`)}
+          >
+            Compare Champion
+          </button>
         </div>
       </div>
     </div>

@@ -17,14 +17,13 @@ function CustomNavbar() {
       setLastChamp(localStorage.getItem("lastViewedChamp") || "Aatrox");
       setLastCompare(localStorage.getItem("lastViewedCompare") || "Aatrox");
     };
+
     window.addEventListener("recentUpdate", updateRecentLinks);
-    return () => {
-      window.removeEventListener("recentUpdate", updateRecentLinks);
-    };
+    return () => window.removeEventListener("recentUpdate", updateRecentLinks);
   }, []);
 
   return (
-    <Navbar expand="lg" className="custom-navbar" fixed="top">
+    <Navbar expand="lg" className="custom-navbar" fixed="top" variant="dark">
       <Container>
         <Navbar.Brand as={NavLink} to="/" className="nav-brand">
           VisionScore
@@ -33,23 +32,23 @@ function CustomNavbar() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto nav-links">
+          <Nav className="ms-auto nav-links align-items-center">
             <Nav.Link as={NavLink} to="/" end>
               Home
             </Nav.Link>
-
             <Nav.Link as={NavLink} to={`/champions/${lastChamp}`}>
               Champion
             </Nav.Link>
-
             <Nav.Link as={NavLink} to={`/compare/${lastCompare}`}>
               Compare
             </Nav.Link>
-
             <Nav.Link as={NavLink} to="/timeline">
-            Timeline
+              Timeline
             </Nav.Link>
-            
+
+            <Nav.Link as={NavLink} to="/signup" className="nav-signup-btn">
+              Sign Up
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

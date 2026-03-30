@@ -1,0 +1,102 @@
+.custom-chart-container {
+  padding: 40px;
+  margin: 40px auto;
+  max-width: 1000px;
+  width: 90%;
+}
+
+.custom-chart-header {
+  text-align: left;
+  margin-bottom: 30px;
+  border-bottom: 1px solid rgba(212, 187, 115, 0.2);
+  padding-bottom: 20px;
+}
+
+.custom-chart-header h3 {
+  font-size: 2rem;
+  margin: 0 0 10px 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.chart-description {
+  color: #8b99a6;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 800px;
+}
+
+.custom-bars-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.custom-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.custom-bar-label {
+  width: 120px;
+  color: #e2e8f0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: right;
+  letter-spacing: 1px;
+}
+
+.custom-bar-track {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.3);
+  height: 35px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(1, 40, 49, 0.8);
+  position: relative;
+}
+
+.custom-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #047b97, #d4bb73);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 15px;
+  box-shadow: 0 0 10px rgba(212, 187, 115, 0.3);
+
+  width: 0;
+  animation: growBar 1.5s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+}
+
+.custom-bar-value {
+  color: #012831;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes growBar {
+  from {
+    width: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .custom-bar-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  .custom-bar-label {
+    text-align: left;
+    width: 100%;
+    font-size: 1rem;
+  }
+  .custom-bar-track {
+    width: 100%;
+  }
+}

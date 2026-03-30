@@ -1,24 +1,34 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import InputGroup from "react-bootstrap/InputGroup";
+import "./ChampionSearch.css";
 
 function SearchBar() {
   const [search, setSearch] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [championsList, setChampionsList] = useState([]);
+  const [version, setVersion] = useState("14.4.1");
+  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchChampions = async () => {
       try {
+        const versionRes = await fetch(
+          "https://ddragon.leagueoflegends.com/api/versions.json",
+        );
+        const versions = await versionRes.json();
+        const latestVersion = versions[0];
+        setVersion(latestVersion);
+
         const res = await fetch(
-          "https://ddragon.leagueoflegends.com/cdn/14.4.1/data/en_US/champion.json"
+          `https://ddragon.leagueoflegends.com/cdn/${latestVersion}/data/en_US/champion.json`,
         );
         const data = await res.json();
-        const keys = Object.keys(data.data);
-        setChampionsList(keys);
+
+        const champsArray = Object.values(data.data).sort((a, b) =>
+          a.name.localeCompare(b.name),
+        );
+        setChampionsList(champsArray);
       } catch (err) {
         console.error("Error fetching champion list:", err);
       }
@@ -36,71 +46,52 @@ function SearchBar() {
     }
 
     const regex = new RegExp(`^${value}`, "i");
-    const filtered = championsList.filter((champ) => regex.test(champ));
+    const filtered = championsList.filter((champ) => regex.test(champ.name));
     setSuggestions(filtered);
   };
 
-  const goToChampion = (champ) => {
-    if (!champ) return;
-    navigate(`/champions/${champ}`);
+  const goToChampion = (champId) => {
+    if (!champId) return;
+    setIsOpen(false);
+    navigate(`/champions/${champId}`);
     setSearch("");
     setSuggestions([]);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    goToChampion(search);
+    if (suggestions.length > 0) {
+      goToChampion(suggestions[0].id);
+    }
   };
 
   return (
-    <div style={{ position: "relative" }}>
-      <Form onSubmit={handleSubmit}>
-        <div className="custom-search">
-          <InputGroup className="inner-search">
-            <Form.Control
-              type="search"
-              placeholder="Search Champion"
-              value={search}
-              onChange={handleChange}
-            />
-            <Button type="submit">Search</Button>
-          </InputGroup>
-        </div>
-      </Form>
+    <div className="search-dropdown-wrapper">
+      <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+        <input
+          type="text"
+          className="champ-search-input"
+          placeholder="Search Champion..."
+          value={search}
+          onChange={handleChange}
+          onFocus={() => setIsOpen(true)}
+          onBlur={() => setTimeout(() => setIsOpen(false), 200)}
+          style={{ padding: "18px 30px", fontSize: "1.4rem" }}
+        />
+      </form>
 
-      {suggestions.length > 0 && (
-        <div
-          style={{
-            position: "absolute",
-            top: "100%",
-            left: 0,
-            right: 0,
-            background: "#012831",
-            border: "2px solid #D4BB73",
-            borderRadius: "10px",
-            zIndex: 10,
-            maxHeight: "200px",
-            overflowY: "auto",
-          }}
-        >
-          {suggestions.map((champ, idx) => (
-            <div
-              key={idx}
-              onClick={() => goToChampion(champ)}
-              style={{
-                padding: "10px 15px",
-                cursor: "pointer",
-                color: "#D4BB73",
-              }}
-              onMouseOver={(e) =>
-                (e.target.style.background = "rgba(212,187,115,0.2)")
-              }
-              onMouseOut={(e) => (e.target.style.background = "transparent")}
-            >
-              {champ}
-            </div>
+      {isOpen && suggestions.length > 0 && (
+        <ul className="champ-dropdown-list">
+          {suggestions.map((c) => (
+            <li key={c.id} onMouseDown={() => goToChampion(c.id)}>
+              <img
+                src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${c.image.full}`}
+                alt={c.name}
+              />
+              {c.name}
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );

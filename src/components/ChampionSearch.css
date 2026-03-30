@@ -1,0 +1,90 @@
+.search-dropdown-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.champ-search-input {
+  width: 100%;
+  padding: 14px 25px;
+  background: rgba(1, 40, 49, 0.9);
+  color: #e2e8f0;
+  border: 2px solid #D4BB73;
+  border-radius: 30px;
+  font-family: "beaufort-pro", serif;
+  font-size: 1.2rem;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.champ-search-input::placeholder {
+  color: #8b99a6;
+  font-style: italic;
+}
+
+.champ-search-input:focus {
+  box-shadow: 0 0 20px rgba(212, 187, 115, 0.5);
+  background: rgba(1, 40, 49, 1);
+}
+
+/* The Dropdown List */
+.champ-dropdown-list {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+  background: #0d1e21;
+  border: 1px solid #D4BB73;
+  border-radius: 12px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  z-index: 9999;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.7);
+}
+
+.champ-dropdown-list::-webkit-scrollbar {
+  width: 8px;
+}
+.champ-dropdown-list::-webkit-scrollbar-thumb {
+  background: #D4BB73;
+  border-radius: 10px;
+}
+
+.champ-dropdown-list li {
+  padding: 12px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: background 0.2s;
+  color: white;
+  font-family: "beaufort-pro", serif;
+  font-size: 1.1rem;
+}
+
+.champ-dropdown-list li:hover {
+  background: rgba(212, 187, 115, 0.2);
+  color: #D4BB73;
+}
+
+.champ-dropdown-list li img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #D4BB73;
+  object-fit: cover;
+}
+
+.no-results {
+  text-align: center;
+  color: #8b99a6;
+  font-style: italic;
+  padding: 20px !important;
+}

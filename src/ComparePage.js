@@ -18,6 +18,10 @@ function ComparePage() {
   const [allChampsList, setAllChampsList] = useState([]);
 
   useEffect(() => {
+    
+    localStorage.setItem("lastViewedCompare", baseChampId);
+    window.dispatchEvent(new Event("recentUpdate"));
+
     const fetchInitialData = async () => {
       try {
         const versionRes = await fetch(

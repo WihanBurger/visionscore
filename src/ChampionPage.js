@@ -12,13 +12,14 @@ function ChampionPage() {
   const { champId } = useParams();
   const navigate = useNavigate();
   const [champData, setChampData] = useState(null);
-  const [version, setVersion] = useState("14.4.1");
+  const [version, setVersion] = useState("14.4.1"); // fallback just in case the api dies
   const [activeTab, setActiveTab] = useState("stats");
   const [imgLoaded, setImgLoaded] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("lastViewedChamp", champId);
     window.dispatchEvent(new Event("recentUpdate"));
+
     const fetchData = async () => {
       try {
         const versionRes = await fetch(
@@ -34,7 +35,7 @@ function ChampionPage() {
         const data = await champRes.json();
         setChampData(data.data[champId]);
       } catch (error) {
-        console.error("Error fetching champion data:", error);
+        console.error("Error fetching champion data:", error); // hopefully never gets seen
       }
     };
     fetchData();
@@ -184,6 +185,7 @@ function ChampionPage() {
                     <h4>
                       {champData.passive.name} <span>(Passive)</span>
                     </h4>
+
                     <p
                       dangerouslySetInnerHTML={{
                         __html: champData.passive.description,

@@ -11,6 +11,8 @@ import "./ComparePage.css";
 function ComparePage() {
   const { baseChampId } = useParams();
   const navigate = useNavigate();
+
+  // Store current patch so images/data links don't break when the game updates
   const [version, setVersion] = useState("14.4.1");
 
   const [baseChamp, setBaseChamp] = useState(null);
@@ -18,24 +20,27 @@ function ComparePage() {
   const [allChampsList, setAllChampsList] = useState([]);
 
   useEffect(() => {
-    
+    // Save to local storage for the recent history feature
     localStorage.setItem("lastViewedCompare", baseChampId);
     window.dispatchEvent(new Event("recentUpdate"));
 
     const fetchInitialData = async () => {
       try {
+        // Get the latest patch
         const versionRes = await fetch(
           "https://ddragon.leagueoflegends.com/api/versions.json",
         );
         const versions = await versionRes.json();
         setVersion(versions[0]);
 
+        // Fetch the main champion data
         const baseRes = await fetch(
           `https://ddragon.leagueoflegends.com/cdn/${versions[0]}/data/en_US/champion/${baseChampId}.json`,
         );
         const baseData = await baseRes.json();
         setBaseChamp(baseData.data[baseChampId]);
 
+        // Get everyone for the search bar
         const listRes = await fetch(
           `https://ddragon.leagueoflegends.com/cdn/${versions[0]}/data/en_US/champion.json`,
         );
@@ -52,6 +57,7 @@ function ComparePage() {
     fetchInitialData();
   }, [baseChampId]);
 
+  // Fetches second champ
   const handleTargetSelection = async (targetId) => {
     try {
       const targetRes = await fetch(
@@ -64,6 +70,7 @@ function ComparePage() {
     }
   };
 
+  // Reload the page URL if they change the main champion
   const handleBaseSelection = (newBaseId) => {
     navigate(`/compare/${newBaseId}`, { replace: true });
   };
@@ -93,6 +100,7 @@ function ComparePage() {
       },
     ];
 
+    // Push the second dataset if an opponent is selected
     if (targetChamp) {
       datasets.push({
         label: targetChamp.name,
@@ -197,9 +205,11 @@ function ComparePage() {
 
   if (!baseChamp) return <div className="loading">Preparing Arena...</div>;
 
+  //so I don't have to copy paste the HTML 20 times for the base stats
   const renderStatRow = (label, statKey, isDecimal = false) => {
     let valA = baseChamp.stats[statKey] || 0;
     let valB = targetChamp ? targetChamp.stats[statKey] || 0 : "-";
+
     if (isDecimal) {
       valA = Number(valA).toFixed(3);
       if (targetChamp) valB = Number(valB).toFixed(3);
@@ -208,6 +218,7 @@ function ComparePage() {
       if (targetChamp) valB = Math.round(valB);
     }
 
+    // Auto highlight the higher stat in green
     let colorA = "#e2e8f0",
       colorB = "#e2e8f0";
     if (targetChamp) {
@@ -270,7 +281,6 @@ function ComparePage() {
               </span>
             ))}
           </div>
-
           <ChampionSearch
             allChampsList={allChampsList}
             version={version}
@@ -284,7 +294,6 @@ function ComparePage() {
         <div className="compare-center">
           <div className="compare-radar-wrapper glass-panel">
             <h3 className="chart-title">Gameplay Profile</h3>
-
             <RadarChart chartData={radarData} />
           </div>
 
@@ -349,7 +358,6 @@ function ComparePage() {
 
           <div className="compare-bar-wrapper glass-panel">
             <h3 className="chart-title">Combat Stats Breakdown</h3>
-
             <BarChart chartData={barData} />
           </div>
         </div>
